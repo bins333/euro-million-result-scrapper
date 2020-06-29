@@ -2,15 +2,18 @@ package com.bj;
 
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 /**
  * Euro Million App to fetch results from google
  */
 public class App {
 
-    static boolean isGoogleLookUp = false;
+    private static boolean isGoogleLookUp = false;
 
-    static ArrayList<String> euroMillionResults;
+    private static ArrayList<String> euroMillionResults;
+
+    private static MillionObject myMillionObject = new MillionObject();
 
 
     public static void main(String[] args) {
@@ -18,13 +21,33 @@ public class App {
 
         euroMillionResults = isGoogleLookUp ? GoogleLookup.fetchEuroMillionResults() : AppUtils.readEuroMillionResultFromFile();
 
-        for (String val : euroMillionResults) {
-            System.out.println(val);
-        }
+        //AppUtils.printEuroMillionResultData(euroMillionResults);
 
-        if(isGoogleLookUp){
+        if (isGoogleLookUp) {
             AppUtils.writeEuroMillionResultToFile(euroMillionResults);
         }
+
+        for (String millionMark : euroMillionResults) {
+
+            AppUtils.countDigitOccurrence(myMillionObject, millionMark);
+
+        }
+
+
+        printOccuranceDetails("FIRST PICK", myMillionObject.getFirstDigitOccurrenceInfoMap());
+        printOccuranceDetails("SECOND PICK", myMillionObject.getSecondDigitOccurrenceInfoMap());
+        printOccuranceDetails("THIRD PICK", myMillionObject.getThirdDigitOccurrenceInfoMap());
+        printOccuranceDetails("FOURTH PICK", myMillionObject.getFourthDigitOccurrenceInfoMap());
+        printOccuranceDetails("FIFTH PICK", myMillionObject.getFifthDigitOccurrenceInfoMap());
+        printOccuranceDetails("FIRST LUCKY BALL", myMillionObject.getFirstLuckyBallOccurrenceInfoMap());
+        printOccuranceDetails("SECOND LUCKY BALL", myMillionObject.getSecondLuckyBallOccurrenceInfoMap());
+
+    }
+
+    private static void printOccuranceDetails(String occurrenceIndex, TreeMap<String, Integer> occurrenceInfoMap) {
+        System.out.println("*** " + occurrenceIndex + " ***");
+        occurrenceInfoMap.forEach((key, value)
+                -> System.out.println("[Digit] : " + key + " [Occurrence] : " + value));
     }
 
 

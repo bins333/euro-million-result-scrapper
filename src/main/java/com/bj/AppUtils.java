@@ -7,12 +7,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 public class AppUtils {
 
     public static String formatEuroMillionResult(String input) {
 
-        StringBuffer result = new StringBuffer(input);
+        StringBuilder result = new StringBuilder(input);
 
         return new StringBuffer()
                 .append(result.substring(0, 2))
@@ -63,4 +64,39 @@ public class AppUtils {
         }
         return myResults;
     }
+
+
+    public static MillionObject countDigitOccurrence(MillionObject millionObject, String val) {
+        //05-15-20-36-47-08-12
+        populateOccurrenceInfoMap(millionObject.getFirstDigitOccurrenceInfoMap(), val.substring(0, 2));
+        populateOccurrenceInfoMap(millionObject.getSecondDigitOccurrenceInfoMap(), val.substring(3, 5));
+        populateOccurrenceInfoMap(millionObject.getThirdDigitOccurrenceInfoMap(), val.substring(6, 8));
+        populateOccurrenceInfoMap(millionObject.getFourthDigitOccurrenceInfoMap(), val.substring(9, 11));
+        populateOccurrenceInfoMap(millionObject.getFifthDigitOccurrenceInfoMap(), val.substring(12, 14));
+        populateOccurrenceInfoMap(millionObject.getFirstLuckyBallOccurrenceInfoMap(), val.substring(15, 17));
+        populateOccurrenceInfoMap(millionObject.getSecondLuckyBallOccurrenceInfoMap(), val.substring(18, 20));
+
+
+        return millionObject;
+
+    }
+
+    private static void populateOccurrenceInfoMap(TreeMap<String, Integer> occurrenceInfoMap, String pickedNumber) {
+
+        if (occurrenceInfoMap.containsKey(pickedNumber)) {
+
+            occurrenceInfoMap.put(pickedNumber, occurrenceInfoMap.get(pickedNumber) + 1);
+
+        } else {
+            occurrenceInfoMap.put(pickedNumber, 1);
+        }
+    }
+
+
+    public static void printEuroMillionResultData(ArrayList<String> resultData) {
+        for (String val : resultData) {
+            System.out.println(val);
+        }
+    }
+
 }
